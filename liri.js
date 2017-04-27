@@ -39,35 +39,37 @@ if (userRequest === "spotify-this-song" && typeof title !== 'undefined') {
     }, function(err, data) {
         if (!err) {
 
-      
-     // logs the album name, line break, then the spotify url for that song
-
-           
-            for (var i = 0; i < 3; i++) {
-            	console.log(data.tracks.items[i].album.name + '\n' + data.tracks.items[i].external_urls.spotify);
-            }
-
          	
      // logs the artists (works for multiple artists for one song, first 3 songs)
            var artistArr = [];
+           var bigArtistArr =[];
 
 			for (var i=0; i < data.tracks.items[0].artists.length; i++) {
     		artistArr.push(data.tracks.items[0].artists[i].name);
 				}
-			console.log(artistArr.join(', '));
+			artistArr.join(', ');
 
 				var artistArr1 = [];
 			for (var i=0; i < data.tracks.items[1].artists.length; i++) {
     		artistArr1.push(data.tracks.items[1].artists[i].name);
 				}
-			console.log(artistArr1.join(', '));
+			artistArr1.join(', ');
 
 					var artistArr2 = [];
 			for (var i=0; i < data.tracks.items[2].artists.length; i++) {
     		artistArr2.push(data.tracks.items[2].artists[i].name);
 				}
-			console.log(artistArr2.join(', '));
-				
+			artistArr2.join(', ');
+
+		// an array of the artist name arrays (in case the song has mutliple artists)
+			bigArtistArr.push(artistArr, artistArr1, artistArr2);
+
+ 		// logs the artist name, title, line break, then the spotify url for that song
+
+           
+            for (var i = 0; i < bigArtistArr.length; i++) {
+            	console.log(bigArtistArr[i] + ", " + data.tracks.items[i].album.name + '\n' + data.tracks.items[i].external_urls.spotify);
+            }
 
         } else {
             console.log('Error occurred: ' + err);
@@ -76,6 +78,7 @@ if (userRequest === "spotify-this-song" && typeof title !== 'undefined') {
 
     });
 }
+// if no song requested gives the info for The Sign by Ace of Base
 if (userRequest === "spotify-this-song" && typeof title == 'undefined') {
 	spotify.search({
         type: 'track',
